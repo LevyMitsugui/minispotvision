@@ -1,5 +1,4 @@
 *.log
-
-/sasquatch.jpg
+*.jpg
 
 temp/
