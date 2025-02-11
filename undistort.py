@@ -1,11 +1,12 @@
 import cv2
 import numpy as np
-import os
 
-cam_calib_path = "./camera_calibration.txt"
+def undistort_frame(frame, mtx=None, dist=None):
+    if mtx is None:
+        raise Exception("mtx could not be loaded")
+    if dist is None:
+        raise Exception("dist could not be loaded")
 
-def undistort_frame(frame, mtx, dist):
-    
     if len(frame.shape) == 3:
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     
@@ -46,30 +47,3 @@ def get_camera_calib(calib_path):
             print("\n")
 
     return mtx, dist
-
-def cls():
-    os.system('cls' if os.name=='nt' else 'clear')
-cls()
-
-
-mtx, dist = get_camera_calib(cam_calib_path)
-
-#Open the camera
-cap = cv2.VideoCapture(0)
-if not cap.isOpened():
-    print("Error: Could not open camera.")
-    exit()
-
-ret, frame = cap.read()
-if ret:
-    
-    image_path = "captured_image.jpg"
-    cv2.imwrite(image_path, frame)
-    print(f"Image saved as {image_path}")
-else:
-    print("Error: Couldn't capture frame.")
-
-cap.release()
-
-dst = undistort_frame(frame, mtx, dist)
-cv2.imwrite('undistorted.png', dst)

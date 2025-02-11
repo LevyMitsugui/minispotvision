@@ -1,17 +1,26 @@
-from imutils.video import VideoStream
 import imutils
 import time
 import cv2
+import undistort as ud
+calib_path = "./camera_calibration.txt"
 
 dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
 aruco_params = cv2.aruco.DetectorParameters()
+mtx, dist = ud.get_camera_calib(calib_path)
 
-video_stream = VideoStream(src=0).start()
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("Error: Could not open camera.")
+    exit()
 time.sleep(2.0)
 
 while True:
-    frame = video_stream.read()
+    ret, frame = cap.read()
+    if not ret:
+        print("Error: Could not capture frame.")
+        break
     frame = imutils.resize(frame, width=720)
+    frame = ud.undistort_frame(frame, mtx, dist)
     corners, ids, _ = cv2.aruco.detectMarkers(frame, dictionary,
     parameters=aruco_params)
     if len(corners) > 0:
@@ -45,5 +54,5 @@ while True:
     if key == ord("q"):
         break
 
-    cv2.destroyAllWindows()
-    video_stream.stop()
+cv2.destroyAllWindows()
+cap.release()
