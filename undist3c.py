@@ -55,21 +55,10 @@ cls()
 mtx, dist = get_camera_calib(cam_calib_path)
 
 #Open the camera
-cap = cv2.VideoCapture(0)
-if not cap.isOpened():
+img = cv2.imread("captured_image.jpg")
+if img is None:
     print("Error: Could not open camera.")
     exit()
 
-ret, frame = cap.read()
-if ret:
-    
-    image_path = "captured_image.jpg"
-    cv2.imwrite(image_path, frame)
-    print(f"Image saved as {image_path}")
-else:
-    print("Error: Couldn't capture frame.")
-
-cap.release()
-
-dst = undistort_frame(frame, mtx, dist)
-cv2.imwrite('undistorted.png', dst)
+dst = undistort_frame(img, mtx, dist)
+cv2.imwrite('undistorted3c.png', dst)

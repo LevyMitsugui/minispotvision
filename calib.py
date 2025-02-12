@@ -17,7 +17,7 @@ objpoints = []  # 3D points in real-world space
 imgpoints = []  # 2D points in image plane
 
 # Input and output folders
-calibfolder = "/home/Levy/Documents/calibimages"
+calibfolder = ""
 images = glob.glob(os.path.join(calibfolder, "*.jpg"))
 
 output_folder = "/home/Levy/Documents/calibresults"

@@ -7,9 +7,6 @@ def undistort_frame(frame, mtx=None, dist=None):
     if dist is None:
         raise Exception("dist could not be loaded")
 
-    if len(frame.shape) == 3:
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    
     h,  w = frame.shape[:2]
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
     # undistort
